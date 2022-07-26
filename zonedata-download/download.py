@@ -12,9 +12,8 @@ s = requests.Session()
 
 # Load the config file
 try:
-  configFile = open("config.json", "r")
-  config = json.load(configFile)
-  configFile.close()
+  with open("config.json", "r") as configFile:
+    config = json.load(configFile)
 except:
   sys.stderr.write("Error loading config.json file.\n")
   exit(1)
@@ -53,9 +52,9 @@ for url in urls:
     directory = './zonefiles'
     if not os.path.exists(directory):
       os.makedirs(directory)
-    path = directory + '/' + filename + '.txt.gz'
+    path = f'{directory}/{filename}.txt.gz'
     with open(path, 'wb') as f:
         for chunk in r.iter_content(1024):
             f.write(chunk)
   else:
-    sys.stderr.write("Unexpected HTTP response for URL " + url + "\n")
+    sys.stderr.write(f"Unexpected HTTP response for URL {url}" + "\n")
